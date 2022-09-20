@@ -9,7 +9,7 @@ process remove_short_reads {
 
   script:
     """
-    seqkit seq -m 500 ${fastq} > ${draft_name}.min500.fastq
+    seqkit seq -m 500 ${fastq} -o ${draft_name}.min500.fastq.gz
     """
 }
 
@@ -40,7 +40,7 @@ process remove_short_contigs {
 
   script:
     """
-    seqkit seq -m 2000 ${assembly} > ${assembly.simpleName}.min2000.fasta
+    seqkit seq -m 2000 ${assembly} -o ${assembly.simpleName}.min2000.fasta.gz
     """
 }
 
