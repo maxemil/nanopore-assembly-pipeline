@@ -3,7 +3,7 @@ process remove_short_reads {
     file fastq
     val draft_name
   output:
-    path "${draft_name}.min500.fastq", emit: min500
+    path "${draft_name}.min500.fastq.gz", emit: min500
 
   publishDir "${params.output_folder}", mode: 'copy'
 
@@ -34,7 +34,7 @@ process remove_short_contigs {
   input:
     file assembly
   output:
-    path "${assembly.simpleName}.min2000.fasta", emit: min2000
+    path "${assembly.simpleName}.min2000.fasta.gz", emit: min2000
 
   publishDir "${params.output_folder}", mode: 'copy'
 
