@@ -14,8 +14,8 @@ workflow {
     remove_short_reads(fastq, params.draft_name)
     flye_assembly(remove_short_reads.out.min500)
     remove_short_contigs(flye_assembly.out.flye)
-    racon(fastq, remove_short_contigs.out.min2000, "01")
-    racon02(fastq, racon.out.racon, "02")
-    medaka(fastq, racon02.out.racon)
+    racon(remove_short_reads.out.min500, remove_short_contigs.out.min2000, "01")
+    racon02(remove_short_reads.out.min500, racon.out.racon, "02")
+    medaka(remove_short_reads.out.min500, racon02.out.racon)
     proovframe(medaka.out.medaka, prot_db)
 }
