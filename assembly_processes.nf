@@ -57,9 +57,8 @@ process racon {
 
   script:
     """
-    bwa index ${assembly}
-    bwa mem -t ${task.cpus} -x ont2d ${assembly} ${fastq} > ${fastq.simpleName}_vs_${assembly.simpleName}.sam
-    racon -m 8 -x -6 -g -8 -w 500 -t ${task.cpus} ${fastq} ${fastq.simpleName}_vs_${assembly.simpleName}.sam ${assembly} > ${assembly.simpleName}.racon${iteration}.fasta
+    minimap2 -t ${task.cpus} -x map-ont ${assembly} ${fastq} > ${fastq.simpleName}_vs_${assembly.simpleName}.paf
+    racon -m 8 -x -6 -g -8 -w 500 -t ${task.cpus} ${fastq} ${fastq.simpleName}_vs_${assembly.simpleName}.paf ${assembly} > ${assembly.simpleName}.racon${iteration}.fasta
     """
 }
 
