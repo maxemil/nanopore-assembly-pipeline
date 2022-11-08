@@ -88,6 +88,7 @@ process proovframe {
   output:
     path "${assembly.simpleName}.proovframe.fasta", emit: proovframe
     path "*.log", emit: proovframe_logs
+    path "${assembly.simpleName}-proovframe.o6", emit: proovframe_map
 
   label "high_cpu"
   publishDir "${params.output_folder}", mode: 'copy'
