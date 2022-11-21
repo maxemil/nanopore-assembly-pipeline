@@ -1,15 +1,17 @@
+params.min_read_length = "500"
+
 process remove_short_reads {
   input:
     file fastq
     val draft_name
   output:
-    path "${draft_name}.min500.fastq.gz", emit: min500
+    path "${draft_name}.min${params.min_read_length}.fastq.gz", emit: min500
 
   publishDir "${params.output_folder}", mode: 'copy'
 
   script:
     """
-    seqkit seq -m 500 ${fastq} -o ${draft_name}.min500.fastq.gz
+    seqkit seq -m ${params.min_read_length} ${fastq} -o ${draft_name}.min${params.min_read_length}.fastq.gz
     """
 }
 
