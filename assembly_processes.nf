@@ -1,4 +1,6 @@
 params.min_read_length = "500"
+params.flye_options = "--nano-raw"
+params.medaka_model = "r941_min_hac_g507"
 
 process remove_short_reads {
   input:
@@ -27,7 +29,7 @@ process flye_assembly {
 
   script:
     """
-    flye -o ${fastq.simpleName}-flye -t ${task.cpus} --meta --nano-raw ${fastq} &> ${fastq.simpleName}-flye.log
+    flye -o ${fastq.simpleName}-flye -t ${task.cpus} --meta ${params.flye_options} ${fastq} &> ${fastq.simpleName}-flye.log
     cp ${fastq.simpleName}-flye/assembly.fasta ${fastq.simpleName}.flye.fasta
     """
 }
@@ -78,7 +80,7 @@ process medaka {
 
   script:
     """
-    medaka_consensus -i ${fastq} -d ${assembly} -o ${assembly.simpleName}-medaka -t ${task.cpus} -m r941_min_hac_g507
+    medaka_consensus -i ${fastq} -d ${assembly} -o ${assembly.simpleName}-medaka -t ${task.cpus} -m ${params.medaka_model}
     cp ${assembly.simpleName}-medaka/consensus.fasta ${assembly.simpleName}.medaka.fasta
     """
 }
