@@ -44,9 +44,9 @@ process remove_short_contigs {
 
   script:
     """
-    # seqkit seq -m 2000 ${assembly} -o ${assembly.simpleName}.min2000.fasta.gz
     flye-post.py ${flye_dir} -m ${params.min_contig_length} -p ${pre}
     """
+    // seqkit seq -m 2000 ${assembly} -o ${assembly.simpleName}.min2000.fasta.gz
 }
 
 process racon {
