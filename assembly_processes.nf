@@ -37,7 +37,7 @@ process remove_short_contigs {
   input:
     tuple val(pre), path(flye_dir)
   output:
-    path "${pre}.fasta", emit: draft
+    path "${pre}.flye.fasta", emit: draft
     path "${flye_dir}", emit: flye_dir
 
   publishDir "${params.output_folder}", mode: 'copy'
