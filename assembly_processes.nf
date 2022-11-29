@@ -37,14 +37,14 @@ process remove_short_contigs {
   input:
     tuple val(pre), path(flye_dir)
   output:
-    path "${pre}.fasta", emit: draft
+    path "${flye_dir}/${pre}.flye.fasta", emit: draft
     path "${flye_dir}", emit: flye_dir
 
   publishDir "${params.output_folder}", mode: 'copy'
 
   script:
     """
-    flye-post.py ${flye_dir} -m ${params.min_contig_length} -p ${pre}
+    flye-post.py ${flye_dir} -m ${params.min_contig_length} -p ${pre}.flye
     """
     // seqkit seq -m 2000 ${assembly} -o ${assembly.simpleName}.min2000.fasta.gz
 }
