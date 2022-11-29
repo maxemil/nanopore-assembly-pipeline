@@ -1,4 +1,5 @@
 params.min_read_length = "500"
+params.min_contig_length = "2000"
 params.flye_options = "--nano-raw"
 params.medaka_model = "r941_min_hac_g507"
 
@@ -21,8 +22,7 @@ process flye_assembly {
   input:
     file fastq
   output:
-    path "${fastq.simpleName}.flye.fasta", emit: flye
-    path "${fastq.simpleName}-flye/", emit: flye_dir
+    tuple val("${fastq.simpleName}"), path("${fastq.simpleName}-flye/"), emit: flye
 
   label "high_cpu"
   publishDir "${params.output_folder}", mode: 'copy'
@@ -30,21 +30,22 @@ process flye_assembly {
   script:
     """
     flye -o ${fastq.simpleName}-flye -t ${task.cpus} --meta ${params.flye_options} ${fastq} &> ${fastq.simpleName}-flye.log
-    cp ${fastq.simpleName}-flye/assembly.fasta ${fastq.simpleName}.flye.fasta
     """
 }
 
 process remove_short_contigs {
   input:
-    file assembly
+    tuple val(pre), path(flye_dir)
   output:
-    path "${assembly.simpleName}.min2000.fasta.gz", emit: min2000
+    path "${pre}.fasta", emit: draft
+    path "${flye_dir}", emit: flye_dir
 
   publishDir "${params.output_folder}", mode: 'copy'
 
   script:
     """
-    seqkit seq -m 2000 ${assembly} -o ${assembly.simpleName}.min2000.fasta.gz
+    # seqkit seq -m 2000 ${assembly} -o ${assembly.simpleName}.min2000.fasta.gz
+    flye-post.py ${flye_dir} -m ${params.min_contig_length} -p ${pre}
     """
 }
 
