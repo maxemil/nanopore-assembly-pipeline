@@ -2,7 +2,7 @@ params.min_read_length = "500"
 params.min_read_quality = "0"
 params.min_contig_length = "2000"
 params.flye_options = "--nano-raw"
-params.medaka_model = "r941_min_hac_g507"
+params.medaka_model = "r941_min_sup_g507"
 
 process remove_short_reads {
   input:
