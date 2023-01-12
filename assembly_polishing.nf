@@ -7,6 +7,7 @@ params.min_contig_length = "2000"
 params.output_folder = params.draft_name
 params.flye_options = "--nano-raw"
 params.medaka_model = "r941_min_sup_g507"
+params.input_format = "fastq.gz"
 
 include { remove_short_reads; flye_assembly; racon; medaka; proovframe; remove_short_contigs} from './assembly_processes.nf'
 include {racon as racon02} from './assembly_processes.nf'

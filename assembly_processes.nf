@@ -3,13 +3,14 @@ params.min_read_quality = "0"
 params.min_contig_length = "2000"
 params.flye_options = "--nano-raw"
 params.medaka_model = "r941_min_sup_g507"
+params.input_format = "fastq.gz"
 
 process remove_short_reads {
   input:
     file fastq
     val draft_name
   output:
-    path "${draft_name}.l${params.min_read_length}_q${params.min_read_quality}.fastq.gz", emit: min500
+    path "${draft_name}.l${params.min_read_length}_q${params.min_read_quality}.${params.input_format}", emit: min500
 
   publishDir "${params.output_folder}", mode: 'copy'
 
@@ -17,7 +18,7 @@ process remove_short_reads {
     """
     nanoq -i ${fastq} -q ${params.min_read_quality} \
                       -l ${params.min_read_length} \
-                      -o ${draft_name}.l${params.min_read_length}_q${params.min_read_quality}.fastq.gz
+                      -o ${draft_name}.l${params.min_read_length}_q${params.min_read_quality}.${params.input_format}
     """
     // seqkit seq -m ${params.min_read_length} ${fastq} -o ${draft_name}.min${params.min_read_length}.fastq.gz
 }
