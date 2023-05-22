@@ -88,8 +88,10 @@ process medaka {
 
   script:
     """
-    medaka_consensus -i ${fastq} -d ${assembly} -o ${assembly.simpleName}-medaka -t ${task.cpus} -m ${params.medaka_model}
-    cp ${assembly.simpleName}-medaka/consensus.fasta ${assembly.simpleName}.medaka.fasta
+    # medaka_consensus -i ${fastq} -d ${assembly} -o ${assembly.simpleName}-medaka -t ${task.cpus} -m ${params.medaka_model}
+    python3 run_medaka_consensus.py -a ${assembly} -f ${fastq} -p ${assembly.simpleName}-medaka/${assembly.simpleName} -t ${task.cpus} -m ${params.medaka_model}
+    # cp ${assembly.simpleName}-medaka/consensus.fasta ${assembly.simpleName}.medaka.fasta
+    cp consensus.fasta ${assembly.simpleName}.medaka.fasta
     """
 }
 
