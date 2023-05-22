@@ -2,12 +2,12 @@ params.min_read_length = "500"
 params.min_read_quality = "0"
 params.min_contig_length = "2000"
 params.flye_options = "--nano-raw"
-params.medaka_model = "r941_min_sup_g507"
+params.medaka_model = "r1041_e82_260bps_hac_g632"
 params.input_format = "fastq.gz"
 
 process remove_short_reads {
   input:
-    file fastq
+    path 'fastq/*'
     val draft_name
   output:
     path "${draft_name}.l${params.min_read_length}_q${params.min_read_quality}.${params.input_format}", emit: min500
@@ -16,7 +16,8 @@ process remove_short_reads {
 
   script:
     """
-    nanoq -i ${fastq} -q ${params.min_read_quality} \
+    zcat --force fastq/* |
+    nanoq -q ${params.min_read_quality} \
                       -l ${params.min_read_length} \
                       -o ${draft_name}.l${params.min_read_length}_q${params.min_read_quality}.${params.input_format}
     """
