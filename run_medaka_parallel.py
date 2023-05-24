@@ -18,8 +18,8 @@ import random
 @click.option('-t', '--threads', type=str)
 
 def main(assembly, fastq, model, prefix, threads):
-    if not os.path.exists(os.path.basedir(prefix)):
-        os.mkdir(os.path.basedir(prefix))
+    if not os.path.exists(os.path.dirname(prefix)):
+        os.mkdir(os.path.dirname(prefix))
     mini_align(fastq, assembly, prefix, threads)
     medaka_consensus(assembly, prefix, model, threads)
     medaka_stich(threads, assembly, prefix)
@@ -43,7 +43,7 @@ def medaka_consensus(assembly, prefix, model, threads):
     recids = []
     for rec in SeqIO.parse(reader, 'fasta'):
         recids.append(rec.id)
-    batchnum = min(25, ceil(int(threads)/2))
+    batchnum = min(10, ceil(int(threads)/2))
     batchsize = int(len(recids)/batchnum + 1)
     reader.close()
 

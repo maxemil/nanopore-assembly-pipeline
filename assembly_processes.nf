@@ -16,12 +16,11 @@ process remove_short_reads {
 
   script:
     """
-    zcat --force fastq/* |
-    nanoq -q ${params.min_read_quality} \
-                      -l ${params.min_read_length} \
-                      -o ${draft_name}.l${params.min_read_length}_q${params.min_read_quality}.${params.input_format}
+    seqkit seq --min-qual ${params.min_read_quality} \
+               --min-len ${params.min_read_length} \
+               --out-file ${draft_name}.l${params.min_read_length}_q${params.min_read_quality}.${params.input_format} \
+               fastq/* 
     """
-    // seqkit seq -m ${params.min_read_length} ${fastq} -o ${draft_name}.min${params.min_read_length}.fastq.gz
 }
 
 process flye_assembly {
@@ -89,7 +88,7 @@ process medaka {
   script:
     """
     # medaka_consensus -i ${fastq} -d ${assembly} -o ${assembly.simpleName}-medaka -t ${task.cpus} -m ${params.medaka_model}
-    python3 run_medaka_consensus.py -a ${assembly} -f ${fastq} -p ${assembly.simpleName}-medaka/${assembly.simpleName} -t ${task.cpus} -m ${params.medaka_model}
+    run_medaka_parallel.py -a ${assembly} -f ${fastq} -p ${assembly.simpleName}-medaka/${assembly.simpleName} -t ${task.cpus} -m ${params.medaka_model}
     # cp ${assembly.simpleName}-medaka/consensus.fasta ${assembly.simpleName}.medaka.fasta
     cp consensus.fasta ${assembly.simpleName}.medaka.fasta
     """
