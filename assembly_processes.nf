@@ -2,7 +2,7 @@ params.min_read_length = "500"
 params.min_read_quality = "0"
 params.min_contig_length = "2000"
 params.flye_options = "--nano-raw"
-params.medaka_model = "r1041_e82_260bps_hac_g632"
+params.medaka_model = "r1041_e82_400bps_sup_v4.3.0"
 params.input_format = "fastq.gz"
 
 process remove_short_reads {
