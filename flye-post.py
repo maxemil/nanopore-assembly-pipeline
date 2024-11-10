@@ -21,7 +21,7 @@ def rename_contigs(seqdict, prefix):
     new_seqdict = {}
     for i, rec in enumerate(seqdict.values()):
         oldid = rec.id
-        rec.id = "{}_{:03d}".format(prefix, i+1)
+        rec.id = "{}_{:0{digits}d}".format(prefix, i+1, digits=len(str(len(seqdict))))
         rec.description = "orig_id:{}".format(oldid)
         old2new[oldid] = rec.id
         new_seqdict[rec.id] = rec
