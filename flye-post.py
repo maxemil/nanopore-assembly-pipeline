@@ -31,7 +31,7 @@ def rename_table(flye_dir, old2new, seqdict):
     df = pd.read_csv('{}/assembly_info.txt'.format(flye_dir), sep='\t')
     df['orig_id'] = df['#seq_name']
     df['#seq_name'] = df['#seq_name'].apply(lambda x: old2new[x])
-    df['gc'] = df['#seq_name'].apply(lambda x: SeqUtils.GC(seqdict[x].seq))
+    df['gc'] = df['#seq_name'].apply(lambda x: SeqUtils.gc_fraction(seqdict[x].seq))
     return df
 
 def parse_sort_sequences(flye_dir):
